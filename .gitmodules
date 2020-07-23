@@ -1,0 +1,18 @@
+[submodule "kernel"]
+	path = kernel
+	url = https://github.com/sel4/sel4
+[submodule "tools"]
+	path = tools
+	url = https://github.com/sel4/sel4_tools
+[submodule "projects/sel4_libs"]
+	path = projects/sel4_libs
+	url = https://github.com/sel4/sel4_libs
+[submodule "projects/musllibc"]
+	path = projects/musllibc
+	url = https://github.com/sel4/musllibc
+[submodule "projects/sel4runtime"]
+	path = projects/sel4runtime
+	url = https://github.com/sel4proj/sel4runtime
+[submodule "projects/util_libs"]
+	path = projects/util_libs
+	url = https://github.com/sel4/util_libs
