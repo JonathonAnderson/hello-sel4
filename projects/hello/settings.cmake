@@ -16,7 +16,7 @@ include(application_settings)
 set(RELEASE OFF CACHE BOOL "Performance optimized build")
 set(VERIFICATION OFF CACHE BOOL "Only verification friendly kernel features")
 set(PLATFORM "imx6" CACHE STRING "Platform to test")
-
+ # set(PLATFORM "hifive" CACHE STRING "Platform to test")
 
 correct_platform_strings()
 

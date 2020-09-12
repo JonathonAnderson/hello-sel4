@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 cmake_minimum_required(VERSION 3.7.2)
 
 include(settings.cmake)
@@ -43,10 +42,3 @@ DeclareRootserver(hello)
 
 include(simulation)
 GenerateSimulateScript()
-=======
-cmake_minimum_required(VERSION 3.10)
-
-project(hello)
-
-add_executable(hello hello.c)
->>>>>>> 1f3ca16a0902bdc0bd8c2848a7d462b7ff098999
