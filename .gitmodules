@@ -9,7 +9,8 @@
 	url = https://github.com/sel4/sel4_libs
 [submodule "projects/musllibc"]
 	path = projects/musllibc
-	url = https://github.com/sel4/musllibc
+    url = https://github.com/sel4/musllibc
+    branch = sel4
 [submodule "projects/sel4runtime"]
 	path = projects/sel4runtime
 	url = https://github.com/sel4proj/sel4runtime
