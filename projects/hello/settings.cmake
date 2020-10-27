@@ -1,11 +1,17 @@
+# Before processing the CMake listfiles that generate desired output,
+# such as executables and libraries, this settings file, and the files it imports, 
+# fill the CMake cache file with variables that are used later or specify buildsystem behaviour
+
 cmake_minimum_required(VERSION 3.7.2)
 
-# project_dir will point to the root of the project,
+# ${project_dir} will point to the root of the project,
 # i.e. the root folder containing following directories:
 # build, kernel, projects, tools
+
 set(project_dir "${CMAKE_CURRENT_LIST_DIR}/../../")
 
 # Gather a list of projects to be built
+
 list(
     APPEND
         project_modules
@@ -18,6 +24,7 @@ list(
 
 # Define the list of paths to be searched when using include() or find_package()
 # Note that the list of projects specified above is included
+
 list(
     APPEND
         CMAKE_MODULE_PATH
@@ -27,24 +34,62 @@ list(
         ${project_modules}
 )
 
-# Search CMAKE_MODULE_PATH for application_settings.cmake
-# The file should be found in ${project_dir}/tools/cmake-tool/helpers/
-# TODO: What does  application_settings configure or provide?
-include(application_settings)
-
 # Some settings
 # TODO: What does each of these variables control?
+
 set(RELEASE OFF CACHE BOOL "Performance optimized build")
 set(VERIFICATION OFF CACHE BOOL "Only verification friendly kernel features")
 set(PLATFORM "sabre" CACHE STRING "Platform to test")
 set(CROSS_COMPILER_PREFIX "arm-linux-gnueabi-" CACHE STRING "Compiler to use")
 
-# TODO: What does correct_platform_strings do?
+# Search CMAKE_MODULE_PATH for application_settings.cmake
+# The file should be found in ${project_dir}/tools/cmake-tool/helpers/
+#
+# The application_settings file contains three functions that are
+# imported:
+#   1) ApplyData61ElfloaderSettings(kernel_platform kernel_sel4_arch)
+#   2) ApplyCommonReleaseVerificationSettings(kernel_arch)
+#   3) correct_platform_strings
+
+include(application_settings)
+
+# correct_platform_strings is defined in 
+# ${project_dir}/tools/cmake-tool/helpers/application_settings.cmake
+# which is imported by including application_settings above
+#
+# The function simply translates and caches the user defined $PLATFORM into 
+# a new string that names a valid platform for which there is a build.
+# Potential variables set are:
+#   $KernelPlatform
+#   $KernelARMPlatform
+#   $KernelSel4Arch
+
 correct_platform_strings()
 
-# Search for FindseL4.cmake in the CMAKE_MODULE_PATH list and load settings
+# Search for FindseL4.cmake in the CMAKE_MODULE_PATH list and load settings.
 # The file should be found in ${project_dir}/kernel
-# TODO: What does seL4 configure or provide?
+#
+# This cmake file sets cache variables:
+#   KERNEL_PATH          - Path to kernel source; Current directory relative to
+#                          FindseL4.cmake
+#   KERNEL_HELPERS_PATH  - Path to helper library helper.cmake file; 
+#                          KERNEL_PATH/tools/helpers.cmake
+#   KERNEL_CONFIG_PATH   - Path to sel4config.cmake;
+#                          KERNEL_PATH/configs/sel4config.cmake
+#
+# It also defines macros to run kernel and libsel4 cmake files:
+#   sel4_import_kernel
+#   sel4_import_libsel4
+#   sel4_configure_platform_settings
+#   
+# Finally, a built-in cmake module FindPackageStandardHandleArgs is included.
+# After including the module, FIND_HANDKE_PACKAGE_STANDAR_ARGS is called to 
+# validate the following paths needed by seL4 are valid:
+#   DEFAULT_MSG
+#   KERNEL_PATH
+#   KERNEL_HELPERS_PATH
+#   KERNEL_CONFIG_PATH
+
 find_package(seL4 REQUIRED)
 
 # TODO What does seL4_configure_platform_settings do?

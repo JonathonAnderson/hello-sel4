@@ -11,6 +11,7 @@ find_package(elfloader-tool REQUIRED)
 sel4_import_kernel()
 
 # Elfloader settings that correspond to how Data61 sets its boards up.
+# This function is defined in ${project_dir}/tools/cmake-tool/helpers/application_settings.cmake
 ApplyData61ElfLoaderSettings(${KernelPlatform} ${KernelSel4Arch})
 elfloader_import_project()
 
