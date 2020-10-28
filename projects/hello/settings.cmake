@@ -59,6 +59,10 @@ include(application_settings)
 #
 # The function simply translates and caches the user defined $PLATFORM into 
 # a new string that names a valid platform for which there is a build.
+#
+# Variables always set:
+#   $correct_platform_strings_platform_aliases
+#
 # Potential variables set are:
 #   $KernelPlatform
 #   $KernelARMPlatform
@@ -92,11 +96,20 @@ correct_platform_strings()
 
 find_package(seL4 REQUIRED)
 
-# TODO What does seL4_configure_platform_settings do?
+# sel4_configure_platform_settings is imported above from find_package(seL4 REQUIRED)
+#
+# It's a simple macro whose only activity is to include KERNEL_PATH/configs/seL4config.cmake
+#
+# TODO: What does sel4config.cmake do? (it does a lot)
+
 sel4_configure_platform_settings()
 
 # TODO: What are valid platforms?
 #       where do these variables inherit from?
+#
+# $KernelPlatform_all_strings - KERNEL_PATH/configs/seL4Config.cmake line 192 using config_choice; seL4Config.cmake imported in previous function call
+# config_choice is imported from KERNEL_PATH/tools/helpers.cmake
+
 set(valid_platforms ${KernelPlatform_all_strings} ${correct_platform_strings_platform_aliases})
 
 # TODO: What does seting the platform property do?
@@ -107,6 +120,7 @@ set_property(CACHE PLATFORM PROPERTY STRINGS ${valid_platforms})
 if(NOT "${PLATFORM}" IN_LIST valid_platforms)
     message(FATAL_ERROR "Invalid PLATFORM selected: \"${PLATFORM}\"
 Valid platforms are: \"${valid_platforms}\"")
+
 endif()
 
 # TODO: What are common release verification settings?
